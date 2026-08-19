@@ -1,0 +1,77 @@
+sequenceDiagram
+    actor Cliente
+    participant Asesor as Asesor/Sistema
+    participant Credito as Credito
+    participant Plan as PlanAmortizacion
+    participant Cuota as Cuota
+    participant Pago as Pago
+    participant Prelacion as PrelacionPago
+    participant Movimiento as Movimiento
+    participant Dinero as "Dinero (Value Object)"
+    
+    Cliente->>Asesor: Entrega pago (ej: Q1,011.88)
+    Asesor->>Credito: registrarPago(monto, fecha)
+    activate Credito
+    
+    Note over Credito: Validaciones iniciales
+    Credito->>Credito: validarEstado()
+    Note over Credito: Estado debe ser VIGENTE o EN_MORA
+    
+    Credito->>Dinero: new Dinero(monto, 'GTQ')
+    activate Dinero
+    Dinero-->>Credito: dinero: Dinero
+    deactivate Dinero
+    
+    Credito->>Pago: crear(dinero, creditoId, claveIdempotencia)
+    activate Pago
+    
+    Pago->>Pago: validarIdempotencia()
+    Pago->>Pago: validarMontoPositivo()
+    Pago-->>Credito: pago: Pago
+    deactivate Pago
+    
+    Credito->>Plan: obtenerCuotaVencida(numero)
+    Plan->>Cuota: getCuota(numero)
+    Cuota-->>Plan: Cuota con capital y interes
+    Plan-->>Credito: cuota: Cuota
+    
+    Note over Credito, Prelacion: Aplicar Prelación (Chain of Responsibility)
+    Credito->>Prelacion: aplicar(cuota, pago)
+    activate Prelacion
+    
+    Prelacion->>Prelacion: Paso 1: Gastos
+    Note over Prelacion: gastos = Q0.00, restante = Q1,011.88
+    
+    Prelacion->>Prelacion: Paso 2: Interés Moratorio
+    Note over Prelacion: Q7.26, restante = Q1,004.62
+    
+    Prelacion->>Prelacion: Paso 3: Interés Corriente
+    Note over Prelacion: Q278.86, restante = Q725.76
+    
+    Prelacion->>Prelacion: Paso 4: Capital
+    Note over Prelacion: Q725.76, restante = Q0.00
+    
+    Prelacion-->>Credito: PagoDistribucion (gastos, moratorio, corriente, capital, excedente)
+    deactivate Prelacion
+    
+    Credito->>Movimiento: crear('PAGO', monto, saldoNuevo)
+    activate Movimiento
+    Movimiento->>Dinero: new Dinero(monto, 'GTQ')
+    Dinero-->>Movimiento: dinero
+    Movimiento-->>Credito: Movimiento registrado
+    deactivate Movimiento
+    
+    Credito->>Cuota: marcarPagada()
+    activate Cuota
+    Cuota->>Cuota: estado = PAGADA
+    Cuota->>Cuota: diasAtraso = 0
+    Cuota-->>Credito: Cuota actualizada
+    deactivate Cuota
+    
+    Credito->>Credito: actualizarEstado()
+    Note over Credito: Si todas las cuotas vencidas pagadas
+    Note over Credito: Estado cambia a VIGENTE
+    
+    Credito-->>Asesor: Pago registrado exitosamente
+    deactivate Credito
+    Asesor-->>Cliente: Comprobante de pago

@@ -1,0 +1,57 @@
+flowchart TD
+    Inicio([Inicio: Cierre Mensual])
+    
+    Inicio --> A[Obtener fecha de corte]
+    A --> B[Filtrar créditos activos]
+    B --> C[Excluir créditos INCOBRABLES]
+    
+    C --> D[Consolidar desembolsos del período]
+    D --> E[Consolidar recuperaciones por concepto]
+    E --> F[Calcular devengo de interés corriente]
+    
+    F --> G{¿Hay créditos con >90 días?}
+    G -->|Sí| H[Calcular interés en suspenso]
+    G -->|No| I[Continuar]
+    
+    H --> I
+    
+    I --> J[Calcular mora y tramos]
+    J --> K[Actualizar díasAtraso de cada crédito]
+    K --> L[Clasificar por tramo: 1-30, 31-60, 61-90, 91-120]
+    
+    L --> M[Calcular cartera en riesgo]
+    M --> N[Identificar créditos en riesgo]
+    N --> O[Sumar saldos de capital de: Créditos >30 días + Reestructurados]
+    
+    O --> P[Calcular incobrables del período]
+    P --> Q[Créditos que superaron 120 días]
+    Q --> R[Excluir de cartera activa]
+    
+    R --> S[Calcular provisiones]
+    S --> T[Generar estado de cartera activa]
+    
+    T --> U[Congelar cifras del período]
+    U --> V[Registrar movimiento de cierre]
+    V --> W[Almacenar en historial de cierres]
+    
+    W --> X{¿Idempotencia?}
+    X -->|Sí| Y[Confirmar: mismo resultado]
+    X -->|No| Z[Error: cierre duplicado]
+    
+    Y --> AA[Generar reporte consolidado]
+    AA --> AB[Fin del cierre mensual]
+    AB --> Fin([Fin])
+    
+    Z --> Error([Error en cierre])
+    
+    subgraph "Reglas de negocio"
+        R1[Regla: Idempotencia - mismo corte = mismo resultado]
+        R2[Regla: No sobrescribir saldos - usar movimientos]
+        R3[Regla: Registro de movimientos para auditoría]
+        R4[Regla: Anatocismo - NO cobrar interés sobre interés]
+    end
+    
+    U -.-> R1
+    V -.-> R2
+    V -.-> R3
+    H -.-> R4

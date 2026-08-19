@@ -1,0 +1,248 @@
+classDiagram
+    %% Value Object Dinero (basado en tu código)
+    class Dinero {
+        <<Value Object>>
+        -importe: Decimal
+        -moneda: Moneda
+        +constructor(importe: string|Decimal, moneda: Moneda)
+        +get valor(): string
+        +get divisa(): Moneda
+        +sumar(otro: Dinero): Dinero
+        +restar(otro: Dinero): Dinero
+        +multiplicar(factor: string|Decimal): Dinero
+        +dividir(divisor: string|Decimal): Dinero
+        +esIgual(otro: Dinero): boolean
+        +esMayorQue(otro: Dinero): boolean
+        +esMenorQue(otro: Dinero): boolean
+        -validarMismaMoneda(otro: Dinero): void
+    }
+    
+    %% Tipo Moneda (definido en tu código)
+    class Moneda {
+        <<type>>
+        'GTQ' | 'USD'
+    }
+    
+    %% Entidades principales
+    class Cliente {
+        -id: string
+        -nombre: string
+        -dpi: string
+        -direccion: string
+        -telefono: string
+        -email: string
+        -fechaRegistro: Date
+        +actualizarDatos(): void
+        +consultarCreditos(): Credito[]
+        +tieneCreditosVigentes(): boolean
+    }
+    
+    class SolicitudCredito {
+        -id: string
+        -clienteId: string
+        -montoSolicitado: Dinero
+        -plazoMeses: number
+        -tasaInteresAnual: number
+        -fechaSolicitud: Date
+        -estado: EstadoSolicitud
+        -comentarios: string
+        +evaluar(): ResultadoEvaluacion
+        +aprobar(usuario: string): void
+        +rechazar(motivo: string): void
+        +desembolsar(): Credito
+        +esAprobable(): boolean
+    }
+    
+    class Credito {
+        -id: string
+        -solicitudId: string
+        -clienteId: string
+        -capital: Dinero
+        -tasaAnual: number
+        -plazoMeses: number
+        -fechaDesembolso: Date
+        -estado: EstadoCredito
+        -diasAtraso: number
+        -esReestructurado: boolean
+        -historialEstados: EstadoRegistro[]
+        +calcularPlan(): PlanAmortizacion
+        +aplicarPago(pago: Pago): ResultadoPago
+        +calcularMora(fechaCorte: Date): Dinero
+        +actualizarEstado(): void
+        +estaVigente(): boolean
+        +estaEnMora(): boolean
+        +estaCancelado(): boolean
+        +getTramoMora(): TramoMora
+        +debeSuspenderInteres(): boolean
+        +estaEnRiesgo(): boolean
+    }
+    
+    class PlanAmortizacion {
+        -creditoId: string
+        -capital: Dinero
+        -tasaMensual: number
+        -numCuotas: number
+        -cuotaFija: Dinero
+        -cuotas: Cuota[]
+        +constructor(capital: Dinero, tasaAnual: number, numCuotas: number)
+        +generarPlan(): void
+        +ajustarUltimaCuota(): void
+        +verificarInvariantes(): boolean
+        +getCuota(numero: number): Cuota
+        +getCuotasVencidas(fechaCorte: Date): Cuota[]
+        +getCuotaFija(): Dinero
+    }
+    
+    class Cuota {
+        -numero: number
+        -fechaVencimiento: Date
+        -saldoInicial: Dinero
+        -interes: Dinero
+        -amortizacion: Dinero
+        -cuota: Dinero
+        -saldoFinal: Dinero
+        -estado: EstadoCuota
+        -diasAtraso: number
+        -fechaPago: Date
+        +estaVencida(fechaCorte: Date): boolean
+        +calcularMora(tasaDiaria: number, diasAtraso: number): Dinero
+        +pagar(monto: Dinero): void
+        +getCapitalEnMora(): Dinero
+        +getSaldoPendiente(): Dinero
+    }
+    
+    class Pago {
+        -id: string
+        -creditoId: string
+        -monto: Dinero
+        -fechaPago: Date
+        -claveIdempotencia: string
+        -distribucion: PagoDistribucion
+        -tipoPago: TipoPago
+        +validar(): boolean
+        +aplicarPrelacion(cuota: Cuota): PagoDistribucion
+        +tieneExcedente(): boolean
+        +getExcedente(): Dinero
+    }
+    
+    class PagoDistribucion {
+        -gastos: Dinero
+        -interesMoratorio: Dinero
+        -interesCorriente: Dinero
+        -capital: Dinero
+        -excedente: Dinero
+        +getTotalAplicado(): Dinero
+        +estaCompleto(): boolean
+        +getConsumido(): Dinero
+    }
+    
+    class Movimiento {
+        -id: string
+        -creditoId: string
+        -tipo: TipoMovimiento
+        -monto: Dinero
+        -saldoAnterior: Dinero
+        -saldoNuevo: Dinero
+        -fecha: Date
+        -descripcion: string
+        +esDesembolso(): boolean
+        +esPago(): boolean
+    }
+    
+    class Cierre {
+        -id: string
+        -fechaCorte: Date
+        -tipo: TipoCierre
+        -periodo: string
+        -totalDesembolsos: Dinero
+        -totalRecuperaciones: Dinero
+        -totalInteresesDevengados: Dinero
+        -carteraActiva: Dinero
+        -carteraRiesgo: Dinero
+        -incobrablesPeriodo: Dinero
+        -porcentajeRiesgo: number
+        -estado: EstadoCierre
+        +calcular(cartera: Credito[]): void
+        +congelar(): void
+        +esReejecutable(): boolean
+        +getResumen(): ResumenCierre
+    }
+    
+    class EstadoRegistro {
+        -estado: EstadoCredito
+        -fecha: Date
+        -usuario: string
+        -motivo: string
+        -comentarios: string
+        +fueTransicionValida(): boolean
+    }
+    
+    %% Enums y Tipos
+    class EstadoCredito {
+        <<enumeration>>
+        SOLICITADO
+        APROBADO
+        RECHAZADO
+        ANULADO
+        DESEMBOLSADO
+        VIGENTE
+        EN_MORA
+        REESTRUCTURADO
+        CANCELADO
+        INCOBRABLE
+    }
+    
+    class EstadoSolicitud {
+        <<enumeration>>
+        PENDIENTE
+        EN_EVALUACION
+        APROBADA
+        RECHAZADA
+        DESEMBOLSADA
+        ANULADA
+    }
+    
+    class TramoMora {
+        <<enumeration>>
+        SIN_MORA
+        MORA_1
+        MORA_2
+        MORA_3
+        VENCIDO
+    }
+    
+    class EstadoCuota {
+        <<enumeration>>
+        PENDIENTE
+        PAGADA
+        VENCIDA
+        CANCELADA
+    }
+    
+    %% Relaciones
+    Cliente "1" -- "0..*" SolicitudCredito : realiza >
+    Cliente "1" -- "0..*" Credito : tiene >
+    SolicitudCredito "1" -- "0..1" Credito : genera >
+    Credito "1" -- "1" PlanAmortizacion : tiene >
+    PlanAmortizacion "1" -- "*" Cuota : contiene >
+    Credito "1" -- "0..*" Pago : recibe >
+    Pago "1" -- "1" PagoDistribucion : define >
+    Credito "1" -- "0..*" Movimiento : genera >
+    Credito "1" -- "*" EstadoRegistro : historial >
+    Credito "0..*" -- "1" Cierre : incluido_en >
+    
+    %% Relaciones con Dinero (Value Object - Composición)
+    Dinero <-- SolicitudCredito : montoSolicitado
+    Dinero <-- Credito : capital
+    Dinero <-- PlanAmortizacion : capital, cuotaFija
+    Dinero <-- Cuota : saldoInicial, interes, amortizacion, cuota, saldoFinal
+    Dinero <-- Pago : monto
+    Dinero <-- PagoDistribucion : gastos, interesMoratorio, interesCorriente, capital, excedente
+    Dinero <-- Movimiento : monto, saldoAnterior, saldoNuevo
+    Dinero <-- Cierre : totalDesembolsos, totalRecuperaciones, totalInteresesDevengados, carteraActiva, carteraRiesgo, incobrablesPeriodo
+    
+    %% Relaciones con Enums
+    Credito --> EstadoCredito
+    Credito --> TramoMora
+    SolicitudCredito --> EstadoSolicitud
+    Cuota --> EstadoCuota

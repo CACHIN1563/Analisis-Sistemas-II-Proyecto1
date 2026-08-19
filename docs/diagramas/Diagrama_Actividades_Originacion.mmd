@@ -1,0 +1,59 @@
+flowchart TD
+    Inicio([Inicio: Solicitud de Crédito])
+    
+    Inicio --> A[Cliente solicita crédito]
+    A --> B[Registrar datos del cliente]
+    B --> C[Capturar solicitud]
+    
+    C --> D{Datos completos?}
+    D -->|No| E[Solicitar información faltante]
+    E --> C
+    
+    D -->|Sí| F[Evaluación inicial]
+    F --> G{¿Cumple criterios mínimos?}
+    G -->|No| H[Solicitud Rechazada]
+    H --> Fin1([Fin])
+    
+    G -->|Sí| I{¿Monto > Q10,000?}
+    I -->|Sí| J[Pasar a Comité de Crédito]
+    I -->|No| K[Pasar a Asesor de Crédito]
+    
+    J --> L{Comité aprueba?}
+    L -->|No| H
+    
+    L -->|Sí| M[Solicitud Aprobada]
+    K --> N{Asesor aprueba?}
+    N -->|No| H
+    
+    N -->|Sí| M
+    
+    M --> O[Generar Plan de Amortización]
+    O --> P[Calcular cuota fija]
+    
+    P --> Q[Generar tabla de amortización]
+    Q --> R[Calcular cada cuota]
+    R --> S[Ajustar última cuota]
+    
+    S --> T{¿Σ amortizaciones = capital?}
+    T -->|No| S
+    T -->|Sí| U{¿saldoFinal = Q0.00?}
+    U -->|No| S
+    U -->|Sí| V[Desembolsar crédito]
+    
+    V --> W[Registrar movimiento de desembolso]
+    W --> X[Crédito Activo - VIGENTE]
+    X --> Fin2([Fin])
+    
+    subgraph "Verificaciones obligatorias"
+        V1[Verificar tasa de interés válida]
+        V2[Verificar plazo permitido 3-24 meses]
+        V3[Verificar capacidad de pago]
+        V4[Verificar NO anatocismo]
+        V5[Verificar monto entre Q1,000 y Q25,000]
+    end
+    
+    M -.-> V1
+    M -.-> V2
+    M -.-> V3
+    O -.-> V4
+    V -.-> V5

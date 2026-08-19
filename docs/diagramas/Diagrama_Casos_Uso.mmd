@@ -1,0 +1,42 @@
+graph TD
+    subgraph "Sistema de Gestión de Microcrédito"
+        UC1[Registrar Cliente]
+        UC2[Solicitar Crédito]
+        UC3[Evaluar/Aprobar Crédito]
+        UC4[Desembolsar Crédito]
+        UC5[Registrar Pago]
+        UC6[Calcular Mora y Tramos]
+        UC7[Generar Cierre Diario/Mensual]
+        UC8[Consultar Cartera en Riesgo]
+        UC9[Ver Historial de Estados]
+    end
+    
+    subgraph "Actores"
+        Cliente((Cliente))
+        Asesor((Asesor de Crédito))
+        Comite((Comité de Crédito))
+        Gerencia((Gerencia))
+        Sistema((Sistema))
+    end
+    
+    Cliente --> UC1
+    Cliente --> UC2
+    Cliente --> UC5
+    
+    Asesor --> UC1
+    Asesor --> UC2
+    Asesor --> UC3
+    Asesor --> UC6
+    
+    Comite --> UC3
+    
+    Gerencia --> UC7
+    Gerencia --> UC8
+    Gerencia --> UC9
+    
+    Sistema --> UC4
+    Sistema --> UC6
+    Sistema --> UC9
+    
+    UC3 -.-> Sistema
+    UC5 -.-> Sistema
