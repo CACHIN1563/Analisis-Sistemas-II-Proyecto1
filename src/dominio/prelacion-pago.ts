@@ -28,7 +28,7 @@ export abstract class ManejadorPago {
 
 export class CobroGastos extends ManejadorPago {
   manejar(pagoDisponible: Dinero, deuda: DeudaCuota, resultado: ResultadoPago): Dinero {
-    if (pagoDisponible.esIgual(new Dinero(0, pagoDisponible.divisa))) {
+    if (pagoDisponible.esIgual(new Dinero('0', pagoDisponible.divisa))) {
       return this.siguienteManejador ? this.siguienteManejador.manejar(pagoDisponible, deuda, resultado) : pagoDisponible;
     }
 
@@ -45,7 +45,7 @@ export class CobroGastos extends ManejadorPago {
 
 export class CobroInteresMoratorio extends ManejadorPago {
   manejar(pagoDisponible: Dinero, deuda: DeudaCuota, resultado: ResultadoPago): Dinero {
-    if (pagoDisponible.esIgual(new Dinero(0, pagoDisponible.divisa))) {
+    if (pagoDisponible.esIgual(new Dinero('0', pagoDisponible.divisa))) {
       return this.siguienteManejador ? this.siguienteManejador.manejar(pagoDisponible, deuda, resultado) : pagoDisponible;
     }
 
@@ -62,7 +62,7 @@ export class CobroInteresMoratorio extends ManejadorPago {
 
 export class CobroInteresCorriente extends ManejadorPago {
   manejar(pagoDisponible: Dinero, deuda: DeudaCuota, resultado: ResultadoPago): Dinero {
-    if (pagoDisponible.esIgual(new Dinero(0, pagoDisponible.divisa))) {
+    if (pagoDisponible.esIgual(new Dinero('0', pagoDisponible.divisa))) {
       return this.siguienteManejador ? this.siguienteManejador.manejar(pagoDisponible, deuda, resultado) : pagoDisponible;
     }
 
@@ -79,7 +79,7 @@ export class CobroInteresCorriente extends ManejadorPago {
 
 export class CobroCapital extends ManejadorPago {
   manejar(pagoDisponible: Dinero, deuda: DeudaCuota, resultado: ResultadoPago): Dinero {
-    if (pagoDisponible.esIgual(new Dinero(0, pagoDisponible.divisa))) {
+    if (pagoDisponible.esIgual(new Dinero('0', pagoDisponible.divisa))) {
       resultado.excedente = pagoDisponible;
       return this.siguienteManejador ? this.siguienteManejador.manejar(pagoDisponible, deuda, resultado) : pagoDisponible;
     }
@@ -108,7 +108,7 @@ export class ProcesadorDePagos {
   }
 
   procesar(pago: Dinero, deuda: DeudaCuota): ResultadoPago {
-    const zero = new Dinero(0, pago.divisa);
+    const zero = new Dinero('0', pago.divisa);
     const resultado: ResultadoPago = {
       pagadoGastos: zero,
       pagadoInteresMoratorio: zero,

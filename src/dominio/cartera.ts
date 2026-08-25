@@ -17,8 +17,8 @@ export interface ReporteCartera {
 
 export class Cartera {
   static calcularIndicadores(creditos: CreditoCartera[], divisa: 'GTQ' | 'USD' = 'GTQ'): ReporteCartera {
-    let activaTotal = new Dinero(0, divisa);
-    let enRiesgoTotal = new Dinero(0, divisa);
+    let activaTotal = new Dinero('0', divisa);
+    let enRiesgoTotal = new Dinero('0', divisa);
 
     for (const credito of creditos) {
       if (credito.incobrable) {

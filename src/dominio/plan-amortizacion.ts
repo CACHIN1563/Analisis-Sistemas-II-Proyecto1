@@ -14,6 +14,59 @@ export interface EstrategiaAmortizacion {
   generarPlan(capital: Dinero, tasaMensual: number, plazos: number): CuotaPlan[];
 }
 
+export class PlanAmortizacionBuilder {
+  private capital?: Dinero;
+  private tasaMensual?: number;
+  private plazos?: number;
+  private estrategia?: EstrategiaAmortizacion;
+
+  setCapital(capital: Dinero): this {
+    this.capital = capital;
+    return this;
+  }
+
+  setTasaMensual(tasaMensual: number): this {
+    this.tasaMensual = tasaMensual;
+    return this;
+  }
+
+  setPlazos(plazos: number): this {
+    this.plazos = plazos;
+    return this;
+  }
+
+  setEstrategia(estrategia: EstrategiaAmortizacion): this {
+    this.estrategia = estrategia;
+    return this;
+  }
+
+  build(): CuotaPlan[] {
+    if (!this.capital) {
+      throw new Error('El capital es obligatorio');
+    }
+    if (this.capital.esIgual(new Dinero('0', this.capital.divisa)) || this.capital.esMenorQue(new Dinero('0', this.capital.divisa))) {
+      throw new Error('El capital debe ser mayor que cero');
+    }
+    if (this.tasaMensual === undefined) {
+      throw new Error('La tasa mensual es obligatoria');
+    }
+    if (!Number.isFinite(this.tasaMensual) || this.tasaMensual < 0) {
+      throw new Error('La tasa mensual no puede ser negativa');
+    }
+    if (this.plazos === undefined) {
+      throw new Error('La cantidad de cuotas es obligatoria');
+    }
+    if (!Number.isInteger(this.plazos) || this.plazos <= 0) {
+      throw new Error('La cantidad de cuotas debe ser un entero mayor que cero');
+    }
+    if (!this.estrategia) {
+      throw new Error('La estrategia de amortización es obligatoria');
+    }
+
+    return this.estrategia.generarPlan(this.capital, this.tasaMensual, this.plazos);
+  }
+}
+
 export class AmortizacionFrancesa implements EstrategiaAmortizacion {
   generarPlan(capital: Dinero, tasaMensual: number, plazos: number): CuotaPlan[] {
     const plan: CuotaPlan[] = [];

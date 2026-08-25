@@ -5,13 +5,13 @@ import { Cartera, CreditoCartera } from '../src/dominio/cartera';
 describe('Cartera en riesgo (Caso 6.8.1)', () => {
   it('debe calcular la cartera en riesgo y la cartera activa excluyendo incobrables', () => {
     const creditos: CreditoCartera[] = [
-      { id: 'C-001', saldoCapital: new Dinero(620000), diasAtrasoMaximaCuota: 0, reestructurado: false, incobrable: false },
-      { id: 'C-002', saldoCapital: new Dinero(124000), diasAtrasoMaximaCuota: 8, reestructurado: false, incobrable: false },
-      { id: 'C-003', saldoCapital: new Dinero(24000), diasAtrasoMaximaCuota: 45, reestructurado: false, incobrable: false },
-      { id: 'C-004', saldoCapital: new Dinero(18000), diasAtrasoMaximaCuota: 75, reestructurado: false, incobrable: false },
-      { id: 'C-005', saldoCapital: new Dinero(8000), diasAtrasoMaximaCuota: 100, reestructurado: false, incobrable: false },
-      { id: 'C-006', saldoCapital: new Dinero(6000), diasAtrasoMaximaCuota: 0, reestructurado: true, incobrable: false },
-      { id: 'C-007', saldoCapital: new Dinero(15000), diasAtrasoMaximaCuota: 210, reestructurado: false, incobrable: true },
+      { id: 'C-001', saldoCapital: new Dinero('620000'), diasAtrasoMaximaCuota: 0, reestructurado: false, incobrable: false },
+      { id: 'C-002', saldoCapital: new Dinero('124000'), diasAtrasoMaximaCuota: 8, reestructurado: false, incobrable: false },
+      { id: 'C-003', saldoCapital: new Dinero('24000'), diasAtrasoMaximaCuota: 45, reestructurado: false, incobrable: false },
+      { id: 'C-004', saldoCapital: new Dinero('18000'), diasAtrasoMaximaCuota: 75, reestructurado: false, incobrable: false },
+      { id: 'C-005', saldoCapital: new Dinero('8000'), diasAtrasoMaximaCuota: 100, reestructurado: false, incobrable: false },
+      { id: 'C-006', saldoCapital: new Dinero('6000'), diasAtrasoMaximaCuota: 0, reestructurado: true, incobrable: false },
+      { id: 'C-007', saldoCapital: new Dinero('15000'), diasAtrasoMaximaCuota: 210, reestructurado: false, incobrable: true },
     ];
 
     const reporte = Cartera.calcularIndicadores(creditos);
@@ -23,13 +23,13 @@ describe('Cartera en riesgo (Caso 6.8.1)', () => {
 
   it('debe calcular el riesgo de 6.06% tras dar por incobrable el crédito C-005', () => {
     const creditos: CreditoCartera[] = [
-      { id: 'C-001', saldoCapital: new Dinero(620000), diasAtrasoMaximaCuota: 0, reestructurado: false, incobrable: false },
-      { id: 'C-002', saldoCapital: new Dinero(124000), diasAtrasoMaximaCuota: 8, reestructurado: false, incobrable: false },
-      { id: 'C-003', saldoCapital: new Dinero(24000), diasAtrasoMaximaCuota: 45, reestructurado: false, incobrable: false },
-      { id: 'C-004', saldoCapital: new Dinero(18000), diasAtrasoMaximaCuota: 75, reestructurado: false, incobrable: false },
-      { id: 'C-005', saldoCapital: new Dinero(8000), diasAtrasoMaximaCuota: 100, reestructurado: false, incobrable: true }, // Ahora es incobrable
-      { id: 'C-006', saldoCapital: new Dinero(6000), diasAtrasoMaximaCuota: 0, reestructurado: true, incobrable: false },
-      { id: 'C-007', saldoCapital: new Dinero(15000), diasAtrasoMaximaCuota: 210, reestructurado: false, incobrable: true },
+      { id: 'C-001', saldoCapital: new Dinero('620000'), diasAtrasoMaximaCuota: 0, reestructurado: false, incobrable: false },
+      { id: 'C-002', saldoCapital: new Dinero('124000'), diasAtrasoMaximaCuota: 8, reestructurado: false, incobrable: false },
+      { id: 'C-003', saldoCapital: new Dinero('24000'), diasAtrasoMaximaCuota: 45, reestructurado: false, incobrable: false },
+      { id: 'C-004', saldoCapital: new Dinero('18000'), diasAtrasoMaximaCuota: 75, reestructurado: false, incobrable: false },
+      { id: 'C-005', saldoCapital: new Dinero('8000'), diasAtrasoMaximaCuota: 100, reestructurado: false, incobrable: true }, // Ahora es incobrable
+      { id: 'C-006', saldoCapital: new Dinero('6000'), diasAtrasoMaximaCuota: 0, reestructurado: true, incobrable: false },
+      { id: 'C-007', saldoCapital: new Dinero('15000'), diasAtrasoMaximaCuota: 210, reestructurado: false, incobrable: true },
     ];
 
     const reporte = Cartera.calcularIndicadores(creditos);

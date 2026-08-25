@@ -27,7 +27,7 @@ export class CalculadoraMora {
     baseConteo: number = 360
   ): Dinero {
     if (diasAtraso <= 0) {
-      return new Dinero(0, capitalEnMora.divisa);
+      return new Dinero('0', capitalEnMora.divisa);
     }
 
     const tasaDiaria = new Decimal(tasaAnual).dividedBy(baseConteo);

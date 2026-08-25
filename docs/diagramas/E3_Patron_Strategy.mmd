@@ -1,0 +1,15 @@
+classDiagram
+    class EstrategiaAmortizacion {
+        <<interface>>
+        +generarPlan(capital, tasaMensual, plazos) CuotaPlan[]
+    }
+    class AmortizacionFrancesa {
+        +generarPlan(capital, tasaMensual, plazos) CuotaPlan[]
+    }
+    class PlanAmortizacionBuilder {
+        -estrategia EstrategiaAmortizacion
+        +setEstrategia(estrategia) PlanAmortizacionBuilder
+        +build() CuotaPlan[]
+    }
+    PlanAmortizacionBuilder --> EstrategiaAmortizacion : delega
+    AmortizacionFrancesa ..|> EstrategiaAmortizacion
