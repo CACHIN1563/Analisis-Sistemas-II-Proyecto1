@@ -1,0 +1,17 @@
+﻿C4Container
+    title Nivel 2: Diagrama de Contenedores - Sistema de Gestión de Microcrédito
+
+    Person(asesor, "Asesor de Crédito", "Usuario del sistema")
+
+    System_Boundary(c1, "Sistema de Microcrédito") {
+        Container(spa, "Aplicación Web / Chat", "React + Vite", "Interfaz gráfica para los asesores.")
+        Container(api, "Backend (API REST)", "Node.js / Express", "Controla la lógica de negocio y reglas financieras.")
+        Container(mcp, "Servidor MCP (Chatbot AI)", "Model Context Protocol", "Asistente con Inteligencia Artificial.")
+        ContainerDb(db, "Base de Datos", "PostgreSQL", "Almacena créditos, pagos y movimientos.")
+    }
+
+    Rel(asesor, spa, "Usa", "HTTPS")
+    Rel(spa, api, "Llama a los endpoints", "JSON/REST")
+    Rel(spa, mcp, "Consulta al asistente", "JSON/REST")
+    Rel(api, db, "Lee y escribe datos", "SQL")
+    Rel(mcp, api, "Ejecuta acciones bancarias", "JSON/REST")
