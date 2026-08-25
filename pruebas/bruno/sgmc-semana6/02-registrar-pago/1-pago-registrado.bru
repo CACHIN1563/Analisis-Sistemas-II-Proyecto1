@@ -1,0 +1,47 @@
+meta {
+  name: 201 · Pago registrado (caso de referencia 6.6.3)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/creditos/C-004/pagos
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/json
+  Idempotency-Key: 5b0b9e2e-6a1f-4a5c-9c1e-0d6d1a1f0b3a
+  Prefer: code=201
+}
+
+body:json {
+  {
+    "monto": { "valor": "1011.88", "moneda": "GTQ" },
+    "fechaPago": "2026-08-22",
+    "medio": "agente_bancario",
+    "referencia": "BOL-88213"
+  }
+}
+
+docs {
+  Caso exitoso. Usa el ejemplo pagoExacto del contrato (cuota 2 vencida,
+  sección 6.6.3). Lleva Prefer: code=201 porque esta operación define DOS
+  respuestas 2xx (200 y 201); sin esa cabecera, Prism responde por
+  defecto con el código más bajo (200).
+}
+
+tests {
+  test("responde 201", function () {
+    expect(res.getStatus()).to.equal(201);
+  });
+  test("el desglose respeta el orden de prelación (sección 6.6)", function () {
+    const aplicacion = res.getBody().aplicacion;
+    expect(aplicacion).to.have.all.keys("gastos", "interesMoratorio", "interesCorriente", "capital", "excedente");
+  });
+  test("reproducido es false en un pago nuevo", function () {
+    expect(res.getBody().reproducido).to.equal(false);
+  });
+}

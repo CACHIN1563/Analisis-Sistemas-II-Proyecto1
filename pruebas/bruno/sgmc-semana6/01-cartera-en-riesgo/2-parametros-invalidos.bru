@@ -1,0 +1,37 @@
+meta {
+  name: 400 · Parámetros de consulta inválidos
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/cartera-riesgo?fechaCorte=2026-08-22
+  body: none
+  auth: none
+}
+
+params:query {
+  fechaCorte: 2026-08-22
+}
+
+headers {
+  Accept: application/problem+json
+  Prefer: code=400
+}
+
+docs {
+  Fuerza el escenario 400 con la cabecera Prefer: code=400. Sin esta
+  cabecera, Prism siempre responde con el caso exitoso (200).
+}
+
+tests {
+  test("responde 400", function () {
+    expect(res.getStatus()).to.equal(400);
+  });
+  test("el status del cuerpo coincide con el código HTTP", function () {
+    expect(res.getBody().status).to.equal(400);
+  });
+  test("el error usa application/problem+json", function () {
+    expect(res.getHeader("content-type")).to.include("application/problem+json");
+  });
+}
