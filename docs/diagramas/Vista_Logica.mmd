@@ -1,0 +1,38 @@
+﻿flowchart TD
+    classDef puerto fill:#d4edda,stroke:#28a745,stroke-width:2px;
+    classDef nucleo fill:#cce5ff,stroke:#007bff,stroke-width:2px;
+    classDef adaptador fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
+
+    subgraph Adaptadores_Primarios ["Adaptadores Primarios (Conducen)"]
+        API[API REST / Express]:::adaptador
+        MCP[Servidor MCP / Chatbot]:::adaptador
+    end
+
+    subgraph Puertos_Primarios ["Puertos Primarios"]
+        UC1(Registrar Pago):::puerto
+        UC2(Consultar Cartera en Riesgo):::puerto
+    end
+
+    subgraph Nucleo_Dominio ["Núcleo de Dominio (Sin Dependencias)"]
+        D1[Dinero]:::nucleo
+        D2[PlanAmortizacion]:::nucleo
+        D3[CalculadoraMora]:::nucleo
+        D4[Cartera]:::nucleo
+    end
+
+    subgraph Puertos_Secundarios ["Puertos Secundarios"]
+        Repo(RepositorioCreditos):::puerto
+        Reloj(Reloj del Sistema):::puerto
+    end
+
+    subgraph Adaptadores_Secundarios ["Adaptadores Secundarios (Conducidos)"]
+        DB[(PostgreSQL)]:::adaptador
+    end
+
+    API --> UC1 & UC2
+    MCP --> UC1 & UC2
+    UC1 --> D1 & D3
+    UC2 --> D4
+    UC1 & UC2 --> Repo
+    D3 --> Reloj
+    Repo -.-> DB
