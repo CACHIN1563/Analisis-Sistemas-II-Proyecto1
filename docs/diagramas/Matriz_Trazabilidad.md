@@ -1,25 +1,3 @@
-<style>
-.markdown-body table {
-    border-collapse: collapse;
-    width: 100%;
-}
-.markdown-body th {
-    background-color: #1a73e8 !important;
-    color: white !important;
-    padding: 12px 15px !important;
-    border: 1px solid #1a73e8 !important;
-}
-.markdown-body td {
-    padding: 10px 15px !important;
-    border: 1px solid #ddd !important;
-}
-.markdown-body tr:nth-child(even) {
-    background-color: #f8f9fa;
-}
-.markdown-body tr:hover {
-    background-color: #e8f0fe !important;
-}
-</style>
 
 ## MATRIZ DE TRAZABILIDAD
 
