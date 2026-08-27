@@ -1,0 +1,65 @@
+stateDiagram-v2
+    [*] --> SOLICITADO: Cliente solicita crédito
+    
+    SOLICITADO --> APROBADO: Comité/Asesor aprueba / [Cumple política]
+    SOLICITADO --> RECHAZADO: Comité/Asesor rechaza
+    SOLICITADO --> ANULADO: Cliente desiste / [Antes de desembolso]
+    
+    APROBADO --> DESEMBOLSADO: Se desembolsa capital
+    APROBADO --> ANULADO: Cliente desiste / [Antes de desembolso]
+    
+    DESEMBOLSADO --> VIGENTE: Capital entregado
+    
+    state VIGENTE {
+        [*] --> AlDia: Pagos al día
+    }
+    
+    VIGENTE --> EN_MORA: Vence cuota impagada / [díasAtraso >= 1]
+    VIGENTE --> CANCELADO: Paga última cuota / [saldo = Q0.00 exacto]
+    
+    state EN_MORA {
+        [*] --> ClasificarTramo: Calcular días de atraso
+        
+        state ClasificarTramo {
+            [*] --> MORA_1: 1-30 días
+            MORA_1 --> MORA_2: 31-60 días
+            MORA_2 --> MORA_3: 61-90 días
+            MORA_3 --> VENCIDO: 91-120 días
+            
+            MORA_2 --> MORA_1: Pago parcial / [díasAtraso baja a ≤30]
+            MORA_3 --> MORA_2: Pago parcial / [díasAtraso baja a ≤60]
+            VENCIDO --> MORA_3: Pago parcial / [díasAtraso baja a ≤90]
+        }
+    }
+    
+    EN_MORA --> VIGENTE: Paga TODO lo vencido / [díasAtraso = 0]
+    EN_MORA --> REESTRUCTURADO: Acuerdo de nuevas condiciones / [Comité autoriza]
+    
+    note right of EN_MORA
+        Los TRAMOS son clasificaciones DERIVADAS
+        Se calculan a partir de díasAtraso
+        Pueden subir Y BAJAR (reversibilidad)
+    end note
+    
+    VENCIDO --> REESTRUCTURADO: Acuerdo de nuevas condiciones / [Comité autoriza]
+    VENCIDO --> INCOBRABLE: Supera 120 días / [díasAtraso > 120]
+    
+    REESTRUCTURADO --> VIGENTE: Cumple nuevo plan / [Al día según plan]
+    REESTRUCTURADO --> EN_MORA: Se atrasa en nuevo plan / [díasAtraso >= 1]
+    REESTRUCTURADO --> CANCELADO: Paga última cuota / [saldo = Q0.00]
+    
+    note right of REESTRUCTURADO
+        Sigue contando como cartera en riesgo
+        Aunque esté al día según nuevas condiciones
+    end note
+    
+    RECHAZADO --> [*]: Terminal
+    ANULADO --> [*]: Terminal
+    CANCELADO --> [*]: Terminal (exitosa)
+    INCOBRABLE --> [*]: Terminal (contable)
+    
+    note right of INCOBRABLE
+        Baja CONTABLE, no perdón
+        Sale de cartera activa
+        Gestión tercerizada a casa de cobro
+    end note

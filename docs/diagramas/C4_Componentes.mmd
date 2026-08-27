@@ -1,0 +1,17 @@
+﻿C4Component
+    title Nivel 3: Diagrama de Componentes - Backend (API REST)
+
+    Container_Boundary(api, "Backend (API REST)") {
+        Component(rutas, "Controlador API", "Express Router", "Recibe peticiones HTTP y valida JSON con Zod.")
+        Component(mod_orig, "Módulo de Originación", "TypeScript", "Gestiona la evaluación y desembolso del crédito.")
+        Component(mod_cartera, "Módulo de Cartera y Cobros", "TypeScript", "Registra pagos aplicando la prelación.")
+        Component(mod_calc, "Cálculo Financiero", "TypeScript", "Motor puro. Calcula interés francés y moratorio.")
+        Component(mod_cierres, "Módulo de Cierres", "TypeScript", "Congela saldos y calcula la cartera en riesgo.")
+        
+        Rel(rutas, mod_orig, "Usa")
+        Rel(rutas, mod_cartera, "Usa")
+        Rel(rutas, mod_cierres, "Usa")
+        
+        Rel(mod_cartera, mod_calc, "Solicita cálculos de mora a")
+        Rel(mod_cierres, mod_calc, "Solicita cálculos a")
+    }

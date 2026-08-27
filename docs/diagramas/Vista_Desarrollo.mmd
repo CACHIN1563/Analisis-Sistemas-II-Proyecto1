@@ -1,0 +1,21 @@
+﻿flowchart LR
+    A[Repositorio: microcredito-p1] --> B(docs/)
+    A --> C(src/)
+    A --> D(tests/)
+    A --> E(package.json / tsconfig.json)
+
+    B --> B1[adr/]
+    B --> B2[api/ openapi.yaml]
+    B --> B3[diagramas/ .mmd]
+
+    C --> C1(dominio/)
+    C1 --> C2[calculadora-mora.ts]
+    C1 --> C3[prelacion-pago.ts]
+    C1 --> C4[dinero.ts]
+
+    D --> D1[mora-pagos.test.ts]
+    D --> D2[cartera.test.ts]
+
+    style C1 fill:#e2f0d9,stroke:#548235
+    style D1 fill:#ffe699,stroke:#c65911
+    style B2 fill:#bdd7ee,stroke:#2e75b6

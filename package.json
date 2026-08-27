@@ -4,7 +4,7 @@
   "description": "Sistema de prestamos para los vecinos de la UMG de Boca del Monte",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,96 @@
+graph TD
+    subgraph "NÚCLEO DEL DOMINIO (Puertos)"
+        D1[Dinero - Value Object]
+        D2[Credito - Entidad]
+        D3[PlanAmortizacion - Entidad]
+        D4[Cuota - Entidad]
+        D5[Pago - Entidad]
+        D6[Cierre - Entidad]
+    end
+    
+    subgraph "PUERTOS PRIMARIOS (Driving Ports)"
+        P1[RegistrarPagoUseCase]
+        P2[DesembolsarCreditoUseCase]
+        P3[CalcularCarteraRiesgoUseCase]
+        P4[GenerarCierreUseCase]
+    end
+    
+    subgraph "PUERTOS SECUNDARIOS (Driven Ports)"
+        S1[CreditoRepository]
+        S2[ClienteRepository]
+        S3[PagoRepository]
+        S4[Reloj]
+    end
+    
+    subgraph "ADAPTADORES PRIMARIOS"
+        A1[API REST - Express/Fastify]
+        A2[Asistente Conversacional - Chat]
+        A3[Servidor MCP]
+    end
+    
+    subgraph "ADAPTADORES SECUNDARIOS"
+        B1[PostgreSQL Repository]
+        B2[InMemory Repository - Pruebas]
+        B3[RelojSistema]
+        B4[RelojFijo - Pruebas]
+    end
+    
+    subgraph "INFRAESTRUCTURA EXTERNA"
+        I1[Base de Datos]
+        I2[LLM - Modelo de Lenguaje]
+    end
+    
+    %% Conexiones
+    A1 --> P1
+    A2 --> P1
+    A3 --> P1
+    
+    A1 --> P2
+    A2 --> P2
+    
+    A1 --> P3
+    A2 --> P3
+    
+    A1 --> P4
+    A2 --> P4
+    
+    P1 --> D1
+    P1 --> D2
+    P1 --> D3
+    P1 --> D4
+    P1 --> D5
+    
+    P2 --> D1
+    P2 --> D2
+    P2 --> D3
+    
+    P3 --> D2
+    P3 --> D6
+    
+    P4 --> D6
+    
+    P1 --> S1
+    P1 --> S3
+    P1 --> S4
+    
+    P2 --> S1
+    P2 --> S2
+    
+    P3 --> S1
+    P4 --> S1
+    
+    S1 --> B1
+    S1 --> B2
+    
+    S2 --> B1
+    S2 --> B2
+    
+    S3 --> B1
+    S3 --> B2
+    
+    S4 --> B3
+    S4 --> B4
+    
+    B1 --> I1
+    A2 --> I2
+    A3 --> I2

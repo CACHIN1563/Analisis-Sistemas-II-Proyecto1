@@ -1,0 +1,33 @@
+meta {
+  name: 422 · Fecha de corte fuera del rango permitido
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/cartera-riesgo?fechaCorte=2026-08-22
+  body: none
+  auth: none
+}
+
+params:query {
+  fechaCorte: 2026-08-22
+}
+
+headers {
+  Accept: application/problem+json
+  Prefer: code=422
+}
+
+docs {
+  Fuerza el escenario 422 con Prefer: code=422.
+}
+
+tests {
+  test("responde 422", function () {
+    expect(res.getStatus()).to.equal(422);
+  });
+  test("el status del cuerpo coincide con el código HTTP", function () {
+    expect(res.getBody().status).to.equal(422);
+  });
+}

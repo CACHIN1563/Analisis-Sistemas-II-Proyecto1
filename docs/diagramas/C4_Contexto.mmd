@@ -1,0 +1,8 @@
+﻿C4Context
+    title Nivel 1: Diagrama de Contexto - Sistema de Gestión de Microcrédito
+
+    Person(asesor, "Asesor de Crédito", "Personal del banco que gestiona préstamos y cobros.")
+    
+    System(sistema, "Sistema de Microcrédito", "Plataforma central que administra los créditos, pagos, mora y cierres mensuales.")
+    
+    Rel(asesor, sistema, "Registra pagos y consulta cartera usando", "HTTPS")

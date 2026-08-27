@@ -1,0 +1,6 @@
+{
+  "version": "1",
+  "name": "SGMC · Semana 6 — Contrato de la API",
+  "type": "collection",
+  "ignore": ["node_modules", ".git"]
+}

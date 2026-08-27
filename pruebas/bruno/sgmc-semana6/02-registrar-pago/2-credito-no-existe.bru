@@ -1,0 +1,40 @@
+meta {
+  name: 404 · El crédito no existe
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/creditos/C-999/pagos
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/problem+json
+  Idempotency-Key: 5b0b9e2e-6a1f-4a5c-9c1e-0d6d1a1f0b3a
+  Prefer: code=404
+}
+
+body:json {
+  {
+    "monto": { "valor": "1011.88", "moneda": "GTQ" },
+    "fechaPago": "2026-08-22",
+    "medio": "agente_bancario",
+    "referencia": "BOL-88213"
+  }
+}
+
+docs {
+  Fuerza el escenario 404 con Prefer: code=404.
+}
+
+tests {
+  test("responde 404", function () {
+    expect(res.getStatus()).to.equal(404);
+  });
+  test("el status del cuerpo coincide con el código HTTP", function () {
+    expect(res.getBody().status).to.equal(404);
+  });
+}

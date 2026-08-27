@@ -1,0 +1,35 @@
+flowchart LR
+    subgraph ORI[Originación]
+        CE[ContextoEstadoCredito]
+        EC[EstadoCreditoState]
+    end
+    subgraph FIN[Cálculo financiero]
+        PB[PlanAmortizacionBuilder]
+        EA[EstrategiaAmortizacion]
+        AF[AmortizacionFrancesa]
+        DM[Dinero]
+    end
+    subgraph COB[Cartera y cobros]
+        PP[ProcesadorDePagos]
+        MP[ManejadorPago]
+        CM[CalculadoraMora]
+    end
+    subgraph CIE[Cierres]
+        CA[Cartera]
+    end
+    subgraph API[Contratos / API]
+        CP[CuotaPlan]
+        DC[DeudaCuota]
+        RC[CreditoCartera]
+    end
+
+    CE --> EC
+    PB --> EA
+    AF -. implementa .-> EA
+    AF --> DM
+    PP --> MP
+    MP --> DM
+    CM --> DM
+    CA --> RC
+    PB --> CP
+    PP --> DC

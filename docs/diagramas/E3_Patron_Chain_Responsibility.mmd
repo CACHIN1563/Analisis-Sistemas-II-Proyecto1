@@ -1,0 +1,21 @@
+classDiagram
+    class ManejadorPago {
+        <<abstract>>
+        #siguienteManejador ManejadorPago
+        +setSiguiente(manejador) ManejadorPago
+        +manejar(pagoDisponible, deuda, resultado) Dinero
+    }
+    class CobroGastos
+    class CobroInteresMoratorio
+    class CobroInteresCorriente
+    class CobroCapital
+    class ProcesadorDePagos {
+        -cadena ManejadorPago
+        +procesar(pago, deuda) ResultadoPago
+    }
+    CobroGastos --|> ManejadorPago
+    CobroInteresMoratorio --|> ManejadorPago
+    CobroInteresCorriente --|> ManejadorPago
+    CobroCapital --|> ManejadorPago
+    ManejadorPago --> ManejadorPago : siguiente
+    ProcesadorDePagos --> ManejadorPago : inicia

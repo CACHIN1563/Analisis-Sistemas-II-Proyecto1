@@ -1,0 +1,26 @@
+classDiagram
+    class PlanAmortizacionBuilder {
+        -capital Dinero
+        -tasaMensual number
+        -plazos number
+        -estrategia EstrategiaAmortizacion
+        +setCapital(capital) PlanAmortizacionBuilder
+        +setTasaMensual(tasaMensual) PlanAmortizacionBuilder
+        +setPlazos(plazos) PlanAmortizacionBuilder
+        +setEstrategia(estrategia) PlanAmortizacionBuilder
+        +build() CuotaPlan[]
+    }
+    class Dinero
+    class EstrategiaAmortizacion {
+        <<interface>>
+        +generarPlan(capital, tasaMensual, plazos) CuotaPlan[]
+    }
+    class CuotaPlan {
+        <<interface>>
+        +numero number
+        +saldoInicial Dinero
+        +saldoFinal Dinero
+    }
+    PlanAmortizacionBuilder --> Dinero : capital
+    PlanAmortizacionBuilder --> EstrategiaAmortizacion : estrategia obligatoria
+    PlanAmortizacionBuilder ..> CuotaPlan : construye

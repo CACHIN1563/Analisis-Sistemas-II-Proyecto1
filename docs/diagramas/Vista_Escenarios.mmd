@@ -1,0 +1,24 @@
+﻿sequenceDiagram
+    autonumber
+    actor Cliente
+    participant API as API REST
+    participant CasoUso as Caso de Uso (RegistrarPago)
+    participant Prelacion as PrelacionPago (Chain of Responsibility)
+    participant BD as Repositorio
+
+    Cliente->>API: POST /pagos { monto, fecha }
+    API->>CasoUso: registrarPago(monto)
+    CasoUso->>BD: buscarCredito()
+    BD-->>CasoUso: Datos del Crédito
+    CasoUso->>Prelacion: procesarPago(monto)
+    
+    Note right of Prelacion: Regla de Negocio
+    Prelacion->>Prelacion: 1. Cobrar Gastos
+    Prelacion->>Prelacion: 2. Cobrar Interés Moratorio
+    Prelacion->>Prelacion: 3. Cobrar Interés Corriente
+    Prelacion->>Prelacion: 4. Cobrar Capital
+    
+    Prelacion-->>CasoUso: Desglose del pago
+    CasoUso->>BD: guardarMovimiento()
+    CasoUso-->>API: Resultado (PagoRegistrado)
+    API-->>Cliente: 201 Created (JSON)

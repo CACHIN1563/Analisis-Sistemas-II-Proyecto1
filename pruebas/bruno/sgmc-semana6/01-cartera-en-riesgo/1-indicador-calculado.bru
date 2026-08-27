@@ -1,0 +1,37 @@
+meta {
+  name: 200 · Indicador calculado (caso de referencia 6.8.1)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/cartera-riesgo?fechaCorte=2026-08-22&incluirReestructurados=true
+  body: none
+  auth: none
+}
+
+params:query {
+  fechaCorte: 2026-08-22
+  incluirReestructurados: true
+}
+
+headers {
+  Accept: application/json
+}
+
+docs {
+  Caso exitoso. Debe responder 200 con el indicador de 7.00 % del caso de
+  referencia del enunciado del Proyecto 1 (sección 6.8.1).
+}
+
+tests {
+  test("responde 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+  test("el porcentaje coincide con el caso de referencia (7.00 %)", function () {
+    expect(res.getBody().porcentajeEnRiesgo).to.equal(0.07);
+  });
+  test("reporta lo dado por incobrable en el período (sección 6.8)", function () {
+    expect(res.getBody()).to.have.property("dadoPorIncobrableEnElPeriodo");
+  });
+}

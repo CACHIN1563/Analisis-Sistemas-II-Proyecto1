@@ -1,0 +1,59 @@
+classDiagram
+    class ContextoEstadoCredito {
+        -estadoActual EstadoCreditoState
+        -registros HistorialEstadoCredito[]
+        +historial readonly HistorialEstadoCredito[]
+        +aprobar(fecha, actor, motivo)
+        +rechazar(fecha, actor, motivo)
+        +desembolsar(fecha, actor, motivo)
+        +desistir(fecha, actor, motivo)
+        +expirar(fecha, actor, motivo)
+        +registrarAtraso(diasAtraso, fecha, actor, motivo)
+        +aplicarPago(saldoCapital, diasAtrasoResultante, fecha, actor, motivo)
+        +reestructurar(fecha, actor, motivo)
+        +marcarIncobrable(fecha, actor, motivo)
+        +cambiarEstado(nuevo, fecha, actor, motivo)
+    }
+    class HistorialEstadoCredito {
+        <<interface>>
+        +estadoAnterior EstadoCredito
+        +estadoNuevo EstadoCredito
+        +fecha Date
+        +actor string
+        +motivo string
+    }
+    class EstadoCreditoState {
+        <<interface>>
+        +nombre EstadoCredito
+        +aprobar(contexto, fecha, actor, motivo)
+        +rechazar(contexto, fecha, actor, motivo)
+        +desembolsar(contexto, fecha, actor, motivo)
+        +desistir(contexto, fecha, actor, motivo)
+        +registrarAtraso(contexto, dias, fecha, actor, motivo)
+        +aplicarPago(contexto, saldo, dias, fecha, actor, motivo)
+        +reestructurar(contexto, fecha, actor, motivo)
+        +marcarIncobrable(contexto, dias, fecha, actor, motivo)
+    }
+    class EstadoCreditoBase
+    class SolicitadoState
+    class AprobadoState
+    class VigenteState
+    class EnMoraState
+    class ReestructuradoState
+    class RechazadoState
+    class AnuladoState
+    class CanceladoState
+    class IncobrableState
+
+    ContextoEstadoCredito --> EstadoCreditoState : estado actual
+    ContextoEstadoCredito *-- HistorialEstadoCredito : conserva
+    EstadoCreditoBase ..|> EstadoCreditoState
+    SolicitadoState --|> EstadoCreditoBase
+    AprobadoState --|> EstadoCreditoBase
+    VigenteState --|> EstadoCreditoBase
+    EnMoraState --|> EstadoCreditoBase
+    ReestructuradoState --|> EstadoCreditoBase
+    RechazadoState --|> EstadoCreditoBase
+    AnuladoState --|> EstadoCreditoBase
+    CanceladoState --|> EstadoCreditoBase
+    IncobrableState --|> EstadoCreditoBase

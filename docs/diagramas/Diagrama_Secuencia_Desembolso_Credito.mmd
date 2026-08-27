@@ -1,0 +1,78 @@
+sequenceDiagram
+    actor Cliente
+    participant Asesor as Asesor/Sistema
+    participant Solicitud as SolicitudCredito
+    participant Credito as Credito
+    participant Plan as PlanAmortizacion
+    participant Dinero as Dinero (Value Object)
+    participant Movimiento as Movimiento
+    
+    Cliente->>Asesor: Solicita crédito
+    Note over Cliente,Asesor: Q10,000 a 12 meses, 36% TNA
+    
+    Asesor->>Solicitud: crear(clienteId, monto, plazo, tasa)
+    activate Solicitud
+    
+    Solicitud->>Dinero: new Dinero(monto, 'GTQ')
+    activate Dinero
+    Dinero-->>Solicitud: dinero: Dinero
+    deactivate Dinero
+    
+    Solicitud->>Solicitud: evaluar()
+    Note over Solicitud: Verifica capacidad de pago
+    Note over Solicitud: Verifica historial crediticio
+    Note over Solicitud: Verifica política de crédito
+    
+    alt Solicitud Aprobada
+        Solicitud-->>Asesor: Solicitud APROBADA
+        Asesor->>Solicitud: aprobar(usuario)
+        Solicitud->>Solicitud: estado = APROBADA
+        
+        Asesor->>Credito: desembolsar(solicitud)
+        activate Credito
+        
+        Credito->>Credito: crear desde solicitud
+        Credito->>Credito: estado = DESEMBOLSADO
+        
+        Note over Credito, Plan: Generar Plan de Amortización
+        Credito->>Plan: generar(capital, tasa, plazo)
+        activate Plan
+        
+        Plan->>Plan: calcularCuotaFija()
+        Note over Plan: Cuota = P × (i×(1+i)ⁿ)/((1+i)ⁿ-1)
+        
+        loop Para cada período k=1 hasta n
+            Plan->>Plan: calcularInteres(k)
+            Note over Plan: Interés = saldoInicial × tasaMensual
+            
+            Plan->>Plan: calcularAmortizacion(k)
+            Note over Plan: Amortización = cuotaFija - interés
+        end
+        
+        Plan->>Plan: ajustarUltimaCuota()
+        Note over Plan: amortización_n = saldo_{n-1}
+        
+        Plan->>Plan: verificarInvariantes()
+        Note over Plan: Σ amortizaciones = capital
+        Note over Plan: saldoFinal = Q0.00
+        
+        Plan-->>Credito: PlanAmortizacion con 12 cuotas
+        
+        Credito->>Movimiento: crear('DESEMBOLSO', capital, saldo)
+        activate Movimiento
+        Movimiento->>Dinero: new Dinero(capital, 'GTQ')
+        Dinero-->>Movimiento: dinero
+        Movimiento-->>Credito: Movimiento registrado
+        deactivate Movimiento
+        
+        Credito->>Credito: estado = VIGENTE
+        Credito-->>Asesor: Crédito desembolsado exitosamente
+        
+        Asesor-->>Cliente: Capital entregado: Q10,000.00
+        
+    else Solicitud Rechazada
+        Solicitud-->>Asesor: Solicitud RECHAZADA
+        Asesor->>Solicitud: rechazar(motivo)
+        Solicitud->>Solicitud: estado = RECHAZADA
+        Asesor-->>Cliente: Solicitud rechazada
+    end
