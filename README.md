@@ -87,4 +87,4 @@ En cumplimiento con la sección 13 de Integridad Académica del curso, declaramo
 * Todo el código de negocio, decisiones arquitectónicas y lógica financiera fue revisado, comprendido y validado manualmente por el equipo de trabajo para garantizar el fiel cumplimiento del enunciado.
 
 ### GLOSARIO
-* [GLOSARIO](https://nodejs.org/es/) 
+* [GLOSARIO](https://github.com/CACHIN1563/Analisis-Sistemas-II-Proyecto1/blob/TEST/docs/Glosario.md) 
