@@ -85,3 +85,6 @@ En cumplimiento con la sección 13 de Integridad Académica del curso, declaramo
 
 * **Google Gemini / Antigravity IDE:** Utilizado como asistente interactivo para la validación de la sintaxis estricta de TypeScript, la correcta implementación de la librería `decimal.js` para evitar el uso del `Number` nativo en el Objeto de Valor `Dinero`, y como apoyo para generar las plantillas de diagramas y la estructuración de carpetas inicial.
 * Todo el código de negocio, decisiones arquitectónicas y lógica financiera fue revisado, comprendido y validado manualmente por el equipo de trabajo para garantizar el fiel cumplimiento del enunciado.
+
+### GLOSARIO
+* [GLOSARIO](https://nodejs.org/es/) 
