@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototipo - Detalle de Mora</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .mockup-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .date {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .client-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            background: rgba(0,0,0,0.2);
+            padding: 1rem;
+            border-radius: 12px;
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .row.sub {
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .row.total {
+            border-top: 1px dashed var(--border);
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+            font-weight: 600;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .grand-total {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .business-rule {
+            color: var(--success);
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .business-rule::before {
+            content: '✓';
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        /* Figma-like UI Elements */
+        .figma-toolbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c2c2c;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: #ccc;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pseudo Figma Toolbar to look like a presentation -->
+    <div class="figma-toolbar">
+        <span>❖ Detalle_Mora_Prototipo</span>
+        <span>100%</span>
+        <span>Visualizar</span>
+    </div>
+
+    <div class="mockup-container">
+        <div class="header">
+            <h1>Detalle de la Mora</h1>
+            <div class="date">Fecha: 29 Agosto 2026</div>
+        </div>
+
+        <div class="client-info">
+            <div>
+                <div style="font-weight: 600;">Marta Xicará</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">Cliente #7690</div>
+            </div>
+            <div class="badge-danger">
+                Atraso: 45 días
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="row">
+                <span>Cuota del Mes</span>
+                <span>Q 1,047.76</span>
+            </div>
+            <div class="row" style="color: var(--text-secondary);">
+                <span>Pago Anterior (8 Agosto 2026)</span>
+                <span>Q 500.00</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Del Pago Anterior (2)</div>
+            <div class="row sub">
+                <span>Capital abonado</span>
+                <span>Q 725.76</span>
+            </div>
+            <div class="row sub">
+                <span>Interés abonado</span>
+                <span>Q 278.86</span>
+            </div>
+            <div class="row total">
+                <span>Sub-total del pago</span>
+                <span>Q 1,004.62</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Mora por atraso (45 días)</div>
+            <div class="row sub">
+                <span>Recargo moratorio</span>
+                <span>Q 18.14</span>
+            </div>
+            <div class="row sub">
+                <span>Gasto de Cobranza</span>
+                <span>Q 25.00</span>
+            </div>
+            <div class="row total">
+                <span>Total mora</span>
+                <span>Q 43.14</span>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Total Pago al Día</div>
+            <div class="grand-total">Q 1,047.76</div>
+            <div class="business-rule">Si cancela hoy quedará a Q 0.00</div>
+        </div>
+
+    </div>
+
+</body>
+</html>
