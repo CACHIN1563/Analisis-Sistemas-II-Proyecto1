@@ -2,7 +2,7 @@
 
 A continuación, se presenta el análisis técnico de la evolución del núcleo del sistema (Proyecto 2), detallando cómo se aplicaron los principios SOLID para incorporar los nuevos requisitos comerciales sin afectar la estabilidad del código heredado del Proyecto 1.
 
-## 1. Principio Abierto/Cerrado (OCP)
+## 1. Principio Abierto/Cerrado (       OCP)
 El diseño se mantuvo **abierto a la extensión, pero cerrado a la modificación**. Como evidencia principal, la clase original `CalculadoraMora` no sufrió alteraciones para soportar la mora escalonada. En su lugar, se implementó el Patrón Strategy mediante la interfaz `IPoliticaMora`, permitiendo inyectar nuevas reglas de negocio (como `PoliticaPlana` y `PoliticaEscalonada`). Esto garantiza que futuros cambios en las políticas de cobro no impacten el motor de cálculo matemático subyacente.
 
 ## 2. Principio de Sustitución de Liskov (LSP)

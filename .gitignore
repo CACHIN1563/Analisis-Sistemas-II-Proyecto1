@@ -1,1 +1,25 @@
-﻿node_modules/
+node_modules/
+web/node_modules/
+dist/
+web/dist/
+src/persistencia/data/
+
+# Documentos internos, capturas y borradores de defensa
+docs/GUION_DEFENSA_VIDEO.md
+docs/*.docx
+docs/*.zip
+docs/*.pdf
+docs/p2_docx/
+docs/p2_extracted/
+docs/p2_unpacked/
+docs/p2_clean_text.txt
+docs/capturas_en_vivo/
+docs/PF_AsistenteGerencial_NoDeGrupo.html
+docs/PF_AsistenteGerencial_NoDeGrupo.pdf
+docs/PF_AsistenteGerencial_NoDeGrupo.md
+docs/Proyecto-Final-Enunciado-037-v2.pdf
+
+# Scripts auxiliares temporales
+scripts/tomar-captura.js
+scripts/leer-docx.ts
+scripts/parse-p2.ts

@@ -4,17 +4,34 @@
   "description": "Sistema de prestamos para los vecinos de la UMG de Boca del Monte",
   "main": "index.js",
   "scripts": {
-    "test": "vitest run"
+    "test": "vitest run --fileParallelism=false",
+    "cargar": "tsx src/persistencia/cargador.ts",
+    "cargar:reset": "tsx src/persistencia/cargador.ts --reset",
+    "api": "tsx src/api/servidor.ts",
+    "start": "tsx src/api/servidor.ts",
+    "mcp": "tsx src/mcp/servidor-mcp.ts",
+    "build:web": "npm --prefix web run build",
+    "dev:web": "npm --prefix web run dev",
+    "db": "tsx scripts/consultar-base.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "decimal.js": "^10.6.0"
+    "@electric-sql/pglite": "^0.5.13",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "cors": "^2.8.6",
+    "decimal.js": "^10.6.0",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "^26.2.0",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vitest": "^4.1.11"
   }
